@@ -23,6 +23,7 @@ public class MinasALV {
     char juego[][];
     int x,y;
     int ganador = 0;
+    boolean perdiste = false;
     
     public MinasALV()
     {
@@ -32,35 +33,45 @@ public class MinasALV {
         System.out.println("IPC1 A Practica 1");
         System.out.println("Buscaminas ALV!!!!!!!");
         enter = sc.nextLine();
-        System.out.println("Buscaminas ALV");
-        System.out.println("Seleccione la dificultad:");
-        System.out.println("1. No me hagas daño :'v");
-        System.out.println("2. !Que vengan¡ :v");
-        System.out.println("3. ¡Soy la Muerte Encarnada! >:v");
-        System.out.println("4. Salir");
-        dificultad = sc.nextInt();
-        System.out.println();
-        switch(dificultad)
+        while (true)
         {
-            case 1:
-                minas = 4;
-                tamaño = 4;
-                ganador = (tamaño*tamaño)-minas;
+            System.out.println("");
+            System.out.println("Buscaminas ALV");
+            System.out.println("Seleccione la dificultad:");
+            System.out.println("1. No me hagas daño :'v");
+            System.out.println("2. !Que vengan¡ :v");
+            System.out.println("3. ¡Soy la Muerte Encarnada! >:v");
+            System.out.println("4. Salir");
+            sc.hasNextInt();
+            dificultad = sc.nextInt();
+            System.out.println();
+            if (dificultad == 4)
+            {
                 break;
-            case 2:
-                minas = 8;
-                tamaño = 6;
-                ganador = (tamaño*tamaño)-minas;
-                break;
-            case 3:
-                minas = 12;
-                tamaño = 8;
-                ganador = (tamaño*tamaño)-minas;
-                break;
+            }
+            switch(dificultad)
+            {
+                case 1:
+                    minas = 4;
+                    tamaño = 4;
+                    ganador = (tamaño*tamaño)-minas;
+                    break;
+                case 2:
+                    minas = 8;
+                    tamaño = 6;
+                    ganador = (tamaño*tamaño)-minas;
+                    break;
+                case 3:
+                    minas = 12;
+                    tamaño = 8;
+                    ganador = (tamaño*tamaño)-minas;
+                    break;
+            }
+            perdiste = false;
+            matriz_principal(tamaño, minas);
+            matriz_juego(tamaño);
+            logica();
         }
-        matriz_principal(tamaño, minas);
-        matriz_juego(tamaño);
-        logica();
     }
     
     public void matriz_principal(int tamaño, int minas)
@@ -507,7 +518,11 @@ public class MinasALV {
         System.out.println("");
         while (true)
         {
-            if(ganador == 0)
+            if (perdiste == true)
+            {
+                break;
+            }
+            if (ganador == 0)
             {
                 System.out.println("Felicidades!!!, ganaste!!!!");
                 break;
@@ -523,6 +538,9 @@ public class MinasALV {
             System.out.print("ingresar opcion: ");
             sc.nextLine();
             opcion = sc.nextLine();
+            if (opcion.equals("s")){
+                break;
+            }
             switch(opcion)
             {
                 case "v":
@@ -531,9 +549,7 @@ public class MinasALV {
                 case "r":
                     matriz_principal(tamaño, minas);
                     matriz_juego(tamaño);
-                    ganador = 0;
-                    break;
-                case "s":
+                    ganador = (tamaño*tamaño)-minas;
                     break;
             }
         }
@@ -545,21 +561,31 @@ public class MinasALV {
         while (true)
         {
         System.out.println("Seleccione la casilla que desea voltear:");
-        System.out.print("ingrese coordenada en x: ");
+        System.out.print("x: ");
+        sc.hasNextInt();
         x = sc.nextInt();
-        System.out.print("ingrese coordenada en y: ");
+        System.out.print("y: ");
+        sc.hasNextInt();
         y = sc.nextInt();
-        if (x < tamaño && y < tamaño && juego[x][y] == 'x')
-        {
-            break;
-        }
-        else
-        {
-            System.out.println();
-            System.out.println("posicion fuera de lugar/ya levanto esa posicion");
-        }
-        }
-        levanta();
+            if (x < tamaño && y < tamaño && juego[x][y] == 'x')
+            {
+                break;
+            }
+            else
+            {
+                System.out.println();
+                System.out.println("posicion fuera de lugar/ya levanto esa posicion");
+            }
+            }
+            if (tablero [x][y]=='*')
+            {
+                perdiste = true;
+                System.out.println("BOOOOOOOOOOOOOM!!! Perdiste.");
+            }
+            else
+            {
+                levanta();
+            }
     }
     
     public void levanta()
