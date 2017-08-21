@@ -21,26 +21,23 @@ public class MinasALV {
     int tamaño = 0;
     char tablero[][];
     char juego[][];
+    int x,y;
+    int ganador = 0;
     
     public MinasALV()
     {
-        
         String enter;
-        
         System.out.println("Ricardo Alvarado");
         System.out.println("201603157");
         System.out.println("IPC1 A Practica 1");
         System.out.println("Buscaminas ALV!!!!!!!");
-        
         enter = sc.nextLine();
-        
         System.out.println("Buscaminas ALV");
         System.out.println("Seleccione la dificultad:");
         System.out.println("1. No me hagas daño :'v");
         System.out.println("2. !Que vengan¡ :v");
         System.out.println("3. ¡Soy la Muerte Encarnada! >:v");
         System.out.println("4. Salir");
-        
         dificultad = sc.nextInt();
         System.out.println();
         switch(dificultad)
@@ -48,23 +45,23 @@ public class MinasALV {
             case 1:
                 minas = 4;
                 tamaño = 4;
+                ganador = (tamaño*tamaño)-minas;
                 break;
             case 2:
                 minas = 8;
                 tamaño = 6;
+                ganador = (tamaño*tamaño)-minas;
                 break;
             case 3:
                 minas = 12;
                 tamaño = 8;
+                ganador = (tamaño*tamaño)-minas;
                 break;
         }
         matriz_principal(tamaño, minas);
         matriz_juego(tamaño);
         logica();
     }
-    
-    
-    
     
     public void matriz_principal(int tamaño, int minas)
     {
@@ -492,12 +489,12 @@ public class MinasALV {
             System.out.println();
         }
         System.out.println("");
-        for(int x = 0;x<tamaño;x++)
+        for(int a = 0;a<tamaño;a++)
         {
             System.out.print("|");
-            for (int y = 0;y < tamaño;y++)
+            for (int b = 0;b < tamaño;b++)
             {
-                System.out.print(tablero[x][y]+"|");
+                System.out.print(tablero[a][b]+"|");
             }
             System.out.println();
         }
@@ -508,21 +505,286 @@ public class MinasALV {
         String opcion;
         System.out.println("El juego dara inicio");
         System.out.println("");
-        System.out.println("---------------------------------------------");
-        System.out.println("");
-        imprime_tableros();
-        System.out.println("");
-        System.out.println("Voltear: v");
-        System.out.println("Reiniciar: r");
-        System.out.println("Salir: s");
-        System.out.println("");
-        System.out.print("ingresar opcion: ");
-        sc.nextLine();
-        opcion = sc.nextLine();
-        switch(opcion)
+        while (true)
         {
-        
+            if(ganador == 0)
+            {
+                System.out.println("Felicidades!!!, ganaste!!!!");
+                break;
+            }
+            System.out.println("---------------------------------------------");
+            System.out.println("");
+            imprime_tableros();
+            System.out.println("");
+            System.out.println("Voltear: v");
+            System.out.println("Reiniciar: r");
+            System.out.println("Salir: s");
+            System.out.println("");
+            System.out.print("ingresar opcion: ");
+            sc.nextLine();
+            opcion = sc.nextLine();
+            switch(opcion)
+            {
+                case "v":
+                    voltear();
+                    break;
+                case "r":
+                    matriz_principal(tamaño, minas);
+                    matriz_juego(tamaño);
+                    ganador = 0;
+                    break;
+                case "s":
+                    break;
+            }
         }
+    }
+    
+    public void voltear()
+    {
+        
+        while (true)
+        {
+        System.out.println("Seleccione la casilla que desea voltear:");
+        System.out.print("ingrese coordenada en x: ");
+        x = sc.nextInt();
+        System.out.print("ingrese coordenada en y: ");
+        y = sc.nextInt();
+        if (x < tamaño && y < tamaño && juego[x][y] == 'x')
+        {
+            break;
+        }
+        else
+        {
+            System.out.println();
+            System.out.println("posicion fuera de lugar/ya levanto esa posicion");
+        }
+        }
+        levanta();
+    }
+    
+    public void levanta()
+    {
+        juego [x][y] = tablero [x][y];
+        ganador = ganador - 1;
+                    if (x == 0 && y == 0)//primera esquina
+                    {
+                        if (tablero[x+1][y] != '*')
+                        {
+                            if (juego [x+1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x+1][y] = tablero [x+1][y];
+                        }
+                        if (tablero[x][y+1] != '*')
+                        {
+                            if (juego [x][y+1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y+1] = tablero [x][y+1];
+                        }
+                    }
+                    else if (x == 0 && y == tamaño-1)//segunda esquina
+                    {
+                        if (tablero[x+1][y] != '*')
+                        {
+                            if (juego [x+1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x+1][y] = tablero [x+1][y];
+                        }
+                        if (tablero[x][y-1] != '*')
+                        {
+                            if (juego [x][y-1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y-1] = tablero [x][y-1];
+                        }
+                    }
+                    else if (x == tamaño-1 && y == 0)//tercera esquina
+                    {
+                        if (tablero[x-1][y] != '*')
+                        {
+                            if (juego [x-1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x-1][y] = tablero [x-1][y];
+                        }
+                        if (tablero[x][y+1] != '*')
+                        {
+                            if (juego [x][y+1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y+1] = tablero [x][y+1];
+                        }
+                    }
+                    else if (x ==  (tamaño-1) && y == (tamaño-1))//cuarta esquina
+                    {
+                        if (tablero[x-1][y] != '*')
+                        {
+                            if (juego [x-1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x-1][y] = tablero [x-1][y];
+                        }
+                        if (tablero[x][y-1] != '*')
+                        {
+                            if (juego [x][y-1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y-1] = tablero [x][y-1];
+                        }
+                    }
+                    else if (x == 0 && y > 0 && y < (tamaño-1))//primera fila
+                    {
+                        if (tablero[x][y-1] != 'x')
+                        {
+                            if (juego [x][y-1]=='*')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y-1] = tablero [x][y-1];
+                        }
+                        if (tablero[x][y+1] != '*')
+                        {
+                            if (juego [x][y+1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y+1] = tablero [x][y+1];
+                        }
+                        if (tablero[x+1][y] != '*')
+                        {
+                            if (juego [x+1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x+1][y] = tablero [x+1][y];
+                        }
+                    }
+                    else if (x == tamaño-1 && y > 0 && y < (tamaño-1))//ultima fila
+                    {
+                        if (tablero[x][y-1] != '*')
+                        {
+                            if (juego [x][y-1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y-1] = tablero [x][y-1];
+                        }
+                        if (tablero[x][y+1] != '*')
+                        {
+                            if (juego [x][y+1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y+1] = tablero [x][y+1];
+                        }
+                        if (tablero[x-1][y] != '*')
+                        {
+                            if (juego [x-1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x-1][y] = tablero [x-1][y];
+                        }
+                    }
+                    else if (y == 0 && x > 0 && x < (tamaño-1))//primera columna
+                    {
+                        if (tablero[x-1][y] != '*')
+                        {
+                            if (juego [x-1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x-1][y] = tablero [x-1][y];
+                        }
+                        if (tablero[x+1][y] != '*')
+                        {
+                            if (juego [x+1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x+1][y] = tablero [x+1][y];
+                        }
+                        if (tablero[x][y+1] != '*')
+                        {
+                            if (juego [x][y+1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y+1] = tablero [x][y+1];
+                        }
+                    }
+                    else if(y == tamaño-1 && x > 0 && x < (tamaño-1))//ultima columna
+                    {
+                        if (tablero[x-1][y] != '*')
+                        {
+                            if (juego [x-1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x-1][y] = tablero [x-1][y];
+                        }
+                        if (tablero[x+1][y] != '*')
+                        {
+                            if (juego [x+1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x+1][y] = tablero [x+1][y];
+                        }
+                        if (tablero[x][y-1] != '*')
+                        {
+                            if (juego [x][y-1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y-1] = tablero [x][y-1];
+                        }
+                    }
+                    else
+                    {
+                        if (tablero[x+1][y] != '*')
+                        {
+                            if (juego [x+1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x+1][y] = tablero [x+1][y];
+                        }
+                        if (tablero[x-1][y] != '*')
+                        {
+                            if (juego [x-1][y]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x-1][y] = tablero [x-1][y];
+                        }
+                        if (tablero[x][y+1] != '*')
+                        {
+                            if (juego [x][y+1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y+1] = tablero [x][y+1];
+                        }
+                        if (tablero[x][y-1] != '*')
+                        {
+                            if (juego [x][y-1]=='x')
+                            {
+                                ganador = ganador - 1;
+                            }
+                            juego [x][y-1] = tablero [x][y-1];
+                        }
+                    }
     }
 }
 
@@ -536,4 +798,8 @@ public class MinasALV {
    reiniciar y salir pero lo importante es lo de voltear ya que 
    necesitare revisar que la posicion este dentro del tablero y
    levantar las casillas que esten alrededor de la casilla seleccionada.
+*/
+
+/* salir del juego, preguntar si desea atacar la posicion, indicar cuando
+   se pierde
 */
