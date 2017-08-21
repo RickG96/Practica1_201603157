@@ -557,7 +557,6 @@ public class MinasALV {
     
     public void voltear()
     {
-        
         while (true)
         {
         System.out.println("Seleccione la casilla que desea voltear:");
@@ -567,25 +566,26 @@ public class MinasALV {
         System.out.print("y: ");
         sc.hasNextInt();
         y = sc.nextInt();
-            if (x < tamaño && y < tamaño && juego[x][y] == 'x')
-            {
-                break;
-            }
-            else
-            {
-                System.out.println();
-                System.out.println("posicion fuera de lugar/ya levanto esa posicion");
-            }
-            }
-            if (tablero [x][y]=='*')
-            {
-                perdiste = true;
-                System.out.println("BOOOOOOOOOOOOOM!!! Perdiste.");
-            }
-            else
-            {
-                levanta();
-            }
+        
+        if (x < tamaño && y < tamaño && juego[x][y] == 'x')
+        {
+            break;
+        }
+        else
+        {
+            System.out.println();
+            System.out.println("posicion fuera de lugar/ya levanto esa posicion");
+        }
+        }
+        if (tablero [x][y]=='*')
+        {
+            perdiste = true;
+            System.out.println("BOOOOOOOOOOOOOM!!! Perdiste.");
+        }
+        else
+        {
+            levanta();
+        }
     }
     
     public void levanta()
@@ -828,4 +828,8 @@ public class MinasALV {
 
 /* salir del juego, preguntar si desea atacar la posicion, indicar cuando
    se pierde
+*/
+
+/*
+    preguntar si desea atacar la posicion
 */
